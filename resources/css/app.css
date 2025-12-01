@@ -1,0 +1,57 @@
+@import 'tailwindcss';
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+}
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Segoe UI', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-heading: 'Poppins', sans-serif;
+
+    --color-finance-blue: #001f1f;
+    /* Darker variant of the background for variety */
+    --color-finance-dark: #000B0B;
+    /* RGB 0, 11, 11 */
+    --color-finance-gold: #B42E25;
+    /* RGB 180, 46, 37 */
+    --color-finance-gold-light: #d6453a;
+    /* Lighter red for hovers */
+
+    --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
+    --animate-slide-in-right: slideInRight 0.8s ease-out forwards;
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+}
