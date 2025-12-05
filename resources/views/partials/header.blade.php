@@ -1,7 +1,7 @@
 <header class="bg-finance-dark text-white shadow-lg sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
         <a href="{{ route('home') }}" class="flex items-center gap-2">
-            <img src="https://otium.com.bo/rsc/logos/logo-otium-white.png" alt="OTIUM" class="h-12 w-auto">
+            <img src="https://otium.com.bo/images/logo-otium-white.png" alt="OTIUM" class="h-12 w-auto">
         </a>
 
         <!-- Desktop Nav -->

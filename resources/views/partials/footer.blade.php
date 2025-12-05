@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1 md:col-span-1">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <img src="https://otium.com.bo/rsc/logos/logo-otium-white.png" alt="OTIUM" class="h-12 w-auto">
+                    <img src="https://otium.com.bo/images/logo-otium-white.png" alt="OTIUM" class="h-12 w-auto">
                 </a>
                 <p class="text-sm leading-relaxed">
                     Servicios profesionales de auditoría y consultoría financiera para empresas modernas. Aseguramos el
