@@ -35,6 +35,9 @@ Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name
 Route::middleware(['auth'])->group(function () {
     Route::get('/blog/create', [App\Http\Controllers\BlogController::class, 'create'])->name('blog.create');
     Route::post('/blog', [App\Http\Controllers\BlogController::class, 'store'])->name('blog.store');
+    Route::get('/blog/{id}/edit', [App\Http\Controllers\BlogController::class, 'edit'])->name('blog.edit');
+    Route::put('/blog/{id}', [App\Http\Controllers\BlogController::class, 'update'])->name('blog.update');
+    Route::delete('/blog/{id}', [App\Http\Controllers\BlogController::class, 'destroy'])->name('blog.destroy');
 });
 Route::get('/blog/{slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
