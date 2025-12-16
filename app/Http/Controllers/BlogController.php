@@ -92,31 +92,80 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'slug' => 'required|alpha_dash|max:255',
-            'excerpt' => 'required',
-            'content' => 'required',
-            'category' => 'required',
-            'image' => 'required|url',
+        $request->validate([
+            'blog_json' => 'required|file|mimes:json|max:2048', // Max 2MB
         ]);
 
-        $newPost = [
-            'slug' => $validated['slug'],
-            'title' => $validated['title'],
-            'excerpt' => $validated['excerpt'],
-            'content' => $validated['content'],
-            'image' => $validated['image'],
-            'date' => now()->format('M d, Y'),
-            'author' => auth()->user()->name, // Authenticated user
-            'category' => $validated['category']
-        ];
+        try {
+            $jsonContent = file_get_contents($request->file('blog_json')->getRealPath());
+            $data = json_decode($jsonContent, true);
 
-        // Store in session for demo purposes since we don't have a migration yet
-        $posts = session('blog_posts', []);
-        $posts[] = $newPost;
-        session(['blog_posts' => $posts]);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return back()->withErrors(['blog_json' => 'El archivo no es un JSON válido.']);
+            }
 
-        return redirect()->route('blog.index')->with('success', 'Blog publicado exitosamente (Demo: Guardado en sesión).');
+            // Basic validation of JSON structure
+            if (!isset($data['title']) || !isset($data['slug']) || !isset($data['content'])) {
+                return back()->withErrors(['blog_json' => 'El JSON no tiene la estructura requerida (Título, Slug, Content).']);
+            }
+
+            // Construct HTML content from JSON parts
+            $htmlContent = '';
+            
+            // Introduction
+            if (!empty($data['content']['introduction'])) {
+                $htmlContent .= '<p class="mb-4">' . e($data['content']['introduction']) . '</p>';
+            }
+
+            // Sections
+            if (!empty($data['content']['sections']) && is_array($data['content']['sections'])) {
+                foreach ($data['content']['sections'] as $section) {
+                    // Handle both simple strings or objects with 'heading'/'content'
+                    if (is_array($section)) {
+                        $heading = $section['heading'] ?? $section['title'] ?? '';
+                        $body = $section['content'] ?? $section['body'] ?? '';
+                        
+                        if ($heading) {
+                            $htmlContent .= '<h3 class="text-2xl font-bold text-finance-dark mb-3">' . e($heading) . '</h3>';
+                        }
+                        if ($body) {
+                            $htmlContent .= '<p class="mb-4">' . e($body) . '</p>';
+                        }
+                    } 
+                }
+            }
+
+            // Conclusion
+            if (!empty($data['content']['conclusion'])) {
+                $htmlContent .= '<h3 class="text-2xl font-bold text-finance-dark mb-3">Conclusión</h3>';
+                $htmlContent .= '<p class="mb-4">' . e($data['content']['conclusion']) . '</p>';
+            }
+
+            // Fallback if content was just a string in the JSON (legacy support or creative use)
+            if (is_string($data['content'])) {
+               $htmlContent = $data['content'];
+            }
+
+            $newPost = [
+                'slug' => (\Illuminate\Support\Str::slug($data['slug'] ?? $data['title'])),
+                'title' => $data['title'],
+                'excerpt' => $data['excerpt'] ?? substr(strip_tags($htmlContent), 0, 150) . '...',
+                'content' => $htmlContent,
+                'image' => $data['featuredImage']['url'] ?? 'https://source.unsplash.com/random/800x600/?office', // Fallback image
+                'date' => $data['date'] ?? now()->format('M d, Y'),
+                'author' => $data['author']['name'] ?? auth()->user()->name,
+                'category' => $data['categories'][0] ?? 'General'
+            ];
+
+            // Store in session
+            $posts = session('blog_posts', []);
+            $posts[] = $newPost;
+            session(['blog_posts' => $posts]);
+
+            return redirect()->route('blog.index')->with('success', 'Blog importado y publicado exitosamente.');
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['blog_json' => 'Error procesando el archivo: ' . $e->getMessage()]);
+        }
     }
 }
