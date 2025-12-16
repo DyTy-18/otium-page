@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 h1,
 h2,
@@ -15,15 +15,16 @@ h6 {
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Segoe UI', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-heading: 'Poppins', sans-serif;
+    --font-sans: "Segoe UI", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --font-heading: "Poppins", sans-serif;
 
-    --color-finance-blue: #001f1f;
-    /* Darker variant of the background for variety */
-    --color-finance-dark: #000B0B;
+    --color-finance-blue: #003366;
+    /* Corporate Navy Blue */
+    --color-finance-dark: #000b0b;
     /* RGB 0, 11, 11 */
-    --color-finance-gold: #B42E25;
+    --color-finance-gold: #b42e25;
     /* RGB 180, 46, 37 */
     --color-finance-gold-light: #d6453a;
     /* Lighter red for hovers */

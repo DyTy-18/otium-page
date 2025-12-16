@@ -68,17 +68,55 @@ class BlogController extends Controller
 
     public function index()
     {
-        return view('blog.index', ['posts' => $this->posts]);
+        $allPosts = array_merge(session('blog_posts', []), $this->posts);
+        return view('blog.index', ['posts' => $allPosts]);
     }
 
     public function show($slug)
     {
-        $post = collect($this->posts)->firstWhere('slug', $slug);
+        // Merge session posts with static posts to find the slug
+        $allPosts = array_merge(session('blog_posts', []), $this->posts);
+        $post = collect($allPosts)->firstWhere('slug', $slug);
 
         if (!$post) {
             abort(404);
         }
 
         return view('blog.show', ['post' => $post]);
+    }
+
+    public function create()
+    {
+        return view('blog.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'slug' => 'required|alpha_dash|max:255',
+            'excerpt' => 'required',
+            'content' => 'required',
+            'category' => 'required',
+            'image' => 'required|url',
+        ]);
+
+        $newPost = [
+            'slug' => $validated['slug'],
+            'title' => $validated['title'],
+            'excerpt' => $validated['excerpt'],
+            'content' => $validated['content'],
+            'image' => $validated['image'],
+            'date' => now()->format('M d, Y'),
+            'author' => auth()->user()->name, // Authenticated user
+            'category' => $validated['category']
+        ];
+
+        // Store in session for demo purposes since we don't have a migration yet
+        $posts = session('blog_posts', []);
+        $posts[] = $newPost;
+        session(['blog_posts' => $posts]);
+
+        return redirect()->route('blog.index')->with('success', 'Blog publicado exitosamente (Demo: Guardado en sesión).');
     }
 }

@@ -43,10 +43,51 @@
 
             <a href="{{ route('about') }}"
                 class="hover:text-finance-gold transition-colors {{ request()->routeIs('about') ? 'text-finance-gold' : '' }}">Nosotros</a>
-            <a href="{{ route('blog.index') }}"
-                class="hover:text-finance-gold transition-colors {{ request()->routeIs('blog.*') ? 'text-finance-gold' : '' }}">Blog</a>
-            <a href="{{ route('contact') }}"
-                class="px-5 py-2 bg-finance-gold text-finance-dark font-semibold rounded hover:bg-finance-gold-light transition-colors">Contacto</a>
+
+            @auth
+                <!-- Blog Dropdown for Authenticated Users -->
+                <div class="relative group">
+                    <button
+                        class="flex items-center gap-1 hover:text-finance-gold transition-colors {{ request()->routeIs('blog.*') ? 'text-finance-gold' : '' }}">
+                        Blog
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50 border-t-4 border-finance-gold">
+                        <a href="{{ route('blog.index') }}"
+                            class="block px-4 py-2 text-slate-700 hover:bg-slate-50 hover:text-finance-gold transition-colors">Ver
+                            Blog</a>
+                        <a href="{{ route('blog.create') }}"
+                            class="block px-4 py-2 text-slate-700 hover:bg-slate-50 hover:text-finance-gold transition-colors">Crear
+                            Blog</a>
+                    </div>
+                </div>
+
+                <!-- User Dropdown / Logout -->
+                <div class="relative group ml-4">
+                    <button class="flex items-center gap-2 text-white hover:text-finance-gold transition-colors">
+                        <span>{{ Auth::user()->name }}</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div
+                        class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50 border-t-4 border-finance-gold">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="block w-full text-left px-4 py-2 text-slate-700 hover:bg-slate-50 hover:text-finance-gold transition-colors">
+                                Cerrar Sesión
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <a href="{{ route('blog.index') }}"
+                    class="hover:text-finance-gold transition-colors {{ request()->routeIs('blog.*') ? 'text-finance-gold' : '' }}">Blog</a>
+            @endauth
         </nav>
 
         <!-- Mobile Menu Button -->

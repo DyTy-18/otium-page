@@ -245,8 +245,7 @@
                             <span class="text-finance-gold">📍</span> Oficina La Paz
                         </h3>
                         <div class="h-48 rounded-lg overflow-hidden bg-slate-200">
-                            <iframe
-                                src="https://maps.google.com/maps?q=Calle+Ferrecio+1154,+La+Paz,+Bolivia&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            <iframe src="https://maps.google.com/maps?q=Otium@-16.5417097,-68.0792399&z=15&output=embed"
                                 width="100%" height="100%" style="border:0;" allowfullscreen=""
                                 loading="lazy"></iframe>
                         </div>
@@ -258,8 +257,7 @@
                             <span class="text-finance-gold">📍</span> Oficina Santa Cruz
                         </h3>
                         <div class="h-48 rounded-lg overflow-hidden bg-slate-200">
-                            <iframe
-                                src="https://maps.google.com/maps?q=Calle+Los+Lirios+1000,+Santa+Cruz+de+la+Sierra,+Bolivia&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            <iframe src="https://maps.google.com/maps?q=Otium@-17.7615323,-63.2011081&z=15&output=embed"
                                 width="100%" height="100%" style="border:0;" allowfullscreen=""
                                 loading="lazy"></iframe>
                         </div>

@@ -30,7 +30,12 @@ Route::get('/company-incorporation', function () {
     return view('services.company-incorporation');
 })->name('services.company-incorporation');
 
+
 Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/blog/create', [App\Http\Controllers\BlogController::class, 'create'])->name('blog.create');
+    Route::post('/blog', [App\Http\Controllers\BlogController::class, 'store'])->name('blog.store');
+});
 Route::get('/blog/{slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/about', function () {
@@ -40,3 +45,16 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+
+
+use App\Http\Controllers\Auth\AuthController;
+
+Route::middleware('guest')->group(function () {
+    Route::view('/login', 'auth.login')->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+
+    Route::view('/register', 'auth.register')->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
+
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
